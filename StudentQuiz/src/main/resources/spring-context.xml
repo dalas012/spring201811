@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="questionDao" class="ru.otus.dalas.dao.QuestionDaoImpl">
+        <constructor-arg name="fileName" value="quiz.csv" />
+        <constructor-arg name="separator" value="," />
+    </bean>
+
+    <bean id="questionService" class="ru.otus.dalas.service.QuestionServiceImpl">
+        <property name="dao" ref="questionDao"/>
+    </bean>
+
+    <bean id="testService" class="ru.otus.dalas.service.TestServiceImpl">
+        <constructor-arg name="questionService" ref="questionService" />
+    </bean>
+
+</beans>
