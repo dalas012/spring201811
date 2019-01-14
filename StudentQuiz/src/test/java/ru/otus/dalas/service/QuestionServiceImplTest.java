@@ -31,7 +31,8 @@ public class QuestionServiceImplTest {
 
         List<Question> result = questionService.getTest();
         assertNotNull(result);
-        assertEquals(result.size(), 3);
+        assertEquals(3, result.size());
+        assertEquals(questions, result);
 
     }
 

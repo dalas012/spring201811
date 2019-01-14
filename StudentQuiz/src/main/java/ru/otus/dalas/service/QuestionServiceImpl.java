@@ -12,6 +12,10 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionServiceImpl() {
     }
 
+    public QuestionServiceImpl(QuestionDao dao) {
+        this.dao = dao;
+    }
+
     public QuestionDao getDao() {
         return dao;
     }
