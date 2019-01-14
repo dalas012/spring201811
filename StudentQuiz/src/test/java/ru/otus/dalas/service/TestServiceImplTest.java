@@ -31,15 +31,16 @@ public class TestServiceImplTest {
         QuestionService questionService = new QuestionServiceImpl();
         ((QuestionServiceImpl) questionService).setDao(dao);
 
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        PrintStream stdout = new PrintStream(outStream);
-        System.setOut(stdout);
-        System.setIn(new ByteArrayInputStream("My\nName\na\nb\nd\n".getBytes()));
+        ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+        PrintStream outputStream = new PrintStream(arrayOutputStream);
+        InputStream inputStream = new ByteArrayInputStream("My\nName\na\nb\nd\n".getBytes());
 
-        TestService testService = new TestServiceImpl(questionService);
+        IOService ioService = new IOServiceImpl(inputStream, outputStream);
+
+        TestService testService = new TestServiceImpl(questionService, ioService);
         testService.startTest();
 
-        assertTrue(outStream.toString().contains("2/3"));
+        assertTrue(arrayOutputStream.toString().contains("2/3"));
 
     }
 

@@ -21,14 +21,16 @@ public class QuestionDaoImpl implements QuestionDao {
         List<Question> result = new ArrayList<>();
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(this.fileName).getFile());
+        InputStream fileInputStream = classLoader.getResourceAsStream(this.fileName);
         String line = "";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(fileInputStream))) {
             while ((line = br.readLine()) != null) {
                 String[] currentLine = line.split(this.separator);
-                Question question = new Question(currentLine[0], currentLine[1]);
-                result.add(question);
+                if (currentLine != null && currentLine.length == 2) {
+                    Question question = new Question(currentLine[0], currentLine[1]);
+                    result.add(question);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,5 +38,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
         return result;
     }
+
+
 
 }
