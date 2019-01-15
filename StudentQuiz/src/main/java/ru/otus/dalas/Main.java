@@ -1,18 +1,15 @@
 package ru.otus.dalas;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.dalas.domain.Question;
-import ru.otus.dalas.service.QuestionService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.otus.dalas.service.TestService;
 import ru.otus.dalas.service.TestServiceImpl;
-
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                CommonConfig.class);
 
         TestService testService = context.getBean(TestServiceImpl.class);
         testService.startTest();
