@@ -2,11 +2,14 @@ package ru.otus.dalas.dao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import ru.otus.dalas.domain.Question;
 
-import java.io.*;
-import java.net.URLDecoder;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +20,9 @@ public class QuestionDaoImpl implements QuestionDao {
     private String fileName;
     private String separator;
 
-    public QuestionDaoImpl(@Value("${locale}") String locale,
-                           @Value("${quiz.filename}") String fileName,
-                           @Value("${quiz.filename_ru_RU}") String fileNameRu,
+    public QuestionDaoImpl(@Value("${quiz.filename}") String fileName,
                            @Value("${quiz.separator}") String separator) {
-        if (locale.equalsIgnoreCase("default")) {
-            this.fileName = fileName;
-        } else if (locale.equalsIgnoreCase("ru_RU")) {
-            this.fileName = fileNameRu;
-        }
+        this.fileName = fileName;
         this.separator = separator;
     }
 
@@ -36,9 +33,8 @@ public class QuestionDaoImpl implements QuestionDao {
         String line = "";
 
         try {
-            String decodedFileName = URLDecoder.decode(fileName, "UTF-8");
-            String file = getClass().getClassLoader().getResource(decodedFileName).getFile();
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            InputStream in = new ClassPathResource(fileName).getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             while ((line = br.readLine()) != null) {
                 String[] currentLine = line.split(this.separator);
                 if (currentLine != null && currentLine.length == 2) {
@@ -52,7 +48,5 @@ public class QuestionDaoImpl implements QuestionDao {
 
         return result;
     }
-
-
 
 }
