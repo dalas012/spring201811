@@ -2,19 +2,20 @@ package ru.otus.dalas.service;
 
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.Properties;
 
 import static org.junit.Assert.*;
 
 public class IOServiceImplTest {
 
     @Test
-    public void readLine() {
+    public void readLine() throws IOException {
 
-        final String TEST_STRING = "test_string";
+        Properties prop = new Properties();
+        prop.load(getClass().getResourceAsStream("/config.properties"));
+
+        final String TEST_STRING = prop.getProperty("test.string");
 
         ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         PrintStream outputStream = new PrintStream(arrayOutputStream);
@@ -28,9 +29,12 @@ public class IOServiceImplTest {
     }
 
     @Test
-    public void printLine() {
+    public void printLine() throws IOException {
 
-        final String TEST_STRING = "test_string";
+        Properties prop = new Properties();
+        prop.load(getClass().getResourceAsStream("/config.properties"));
+
+        final String TEST_STRING = prop.getProperty("test.string");
 
         ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         PrintStream outputStream = new PrintStream(arrayOutputStream);
