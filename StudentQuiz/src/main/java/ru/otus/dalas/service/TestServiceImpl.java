@@ -1,14 +1,12 @@
 package ru.otus.dalas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.otus.dalas.domain.Question;
 
 import java.util.List;
 
 @Service
-@PropertySource("classpath:config.properties")
 public class TestServiceImpl implements TestService {
 
     private MessageService messageService;

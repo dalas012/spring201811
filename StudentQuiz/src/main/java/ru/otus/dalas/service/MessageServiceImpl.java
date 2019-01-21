@@ -1,15 +1,13 @@
 package ru.otus.dalas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import ru.otus.dalas.config.YmlProperties;
 
 import java.util.Locale;
 
 @Service
-@PropertySource("classpath:config.properties")
 public class MessageServiceImpl implements MessageService {
 
     private Locale locale;
@@ -19,9 +17,9 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     public MessageServiceImpl(
             MessageSource messageSource,
-            @Value("${locale.language-tag}") String languageTag) {
+            YmlProperties properties) {
         this.messageSource = messageSource;
-        this.locale = new Locale(languageTag);
+        this.locale = new Locale(properties.getLanguageTag());
         this.emptyParams = new String[0];
     }
 
