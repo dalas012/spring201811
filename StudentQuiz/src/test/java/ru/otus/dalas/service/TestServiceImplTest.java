@@ -9,10 +9,7 @@ import ru.otus.dalas.dao.QuestionDaoImpl;
 import ru.otus.dalas.domain.Question;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -22,7 +19,10 @@ import static org.mockito.ArgumentMatchers.*;
 public class TestServiceImplTest {
 
     @Test
-    public void startTest() {
+    public void startTest() throws IOException {
+
+        Properties prop = new Properties();
+        prop.load(getClass().getResourceAsStream("/config.properties"));
 
         MessageSource messageSource = mock(MessageSource.class);
         when(messageSource.getMessage(anyString(), any(), any())).thenAnswer(new Answer<String>() {
@@ -60,7 +60,9 @@ public class TestServiceImplTest {
 
         IOService ioService = new IOServiceImpl(inputStream, outputStream);
 
-        TestService testService = new TestServiceImpl(messageSource, questionService, ioService, new Locale("ru_RU"));
+        MessageService messageService = new MessageServiceImpl(messageSource, prop.getProperty("locale.language-tag"));
+
+        TestService testService = new TestServiceImpl(messageService, questionService, ioService);
         testService.startTest();
 
         assertTrue(arrayOutputStream.toString().contains("2/3"));

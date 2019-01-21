@@ -1,45 +1,38 @@
 package ru.otus.dalas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.otus.dalas.domain.Question;
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @PropertySource("classpath:config.properties")
 public class TestServiceImpl implements TestService {
 
-    private MessageSource messageSource;
+    private MessageService messageService;
     private QuestionService questionService;
     private IOService ioService;
-    private Locale locale;
 
     @Autowired
-    public TestServiceImpl(MessageSource messageSource,
+    public TestServiceImpl(MessageService messageService,
                            QuestionService questionService,
-                           IOService ioService,
-                           Locale locale) {
-        this.messageSource = messageSource;
+                           IOService ioService) {
+        this.messageService = messageService;
         this.questionService = questionService;
         this.ioService = ioService;
-        this.locale = locale;
     }
 
     @Override
     public void startTest() {
 
-        String[] params = new String[0];
-
-        ioService.printLine(messageSource.getMessage("Starting-test", params, locale));
-        ioService.printLine(messageSource.getMessage("Enter-first-name", params, locale));
+        ioService.printLine(messageService.getMessage("Starting-test"));
+        ioService.printLine(messageService.getMessage("Enter-first-name"));
         String firstName = ioService.readLine();
-        ioService.printLine(messageSource.getMessage("Enter-last-name", params, locale));
+        ioService.printLine(messageService.getMessage("Enter-last-name"));
         String lastName = ioService.readLine();
-        ioService.printLine(messageSource.getMessage("Answer-the-questions-Good-luck", params, locale));
+        ioService.printLine(messageService.getMessage("Answer-the-questions-Good-luck"));
 
         int correctCount = 0;
         List<Question> questions = questionService.getTest();
@@ -52,8 +45,10 @@ public class TestServiceImpl implements TestService {
             }
         }
 
-        params = new String[] {firstName, lastName, String.valueOf(correctCount), String.valueOf(questions.size())};
-        ioService.printLine(messageSource.getMessage("Result-message", params, locale));
+        String[] params = new String[] {
+                firstName, lastName, String.valueOf(correctCount), String.valueOf(questions.size())
+        };
+        ioService.printLine(messageService.getMessage("Result-message", params));
 
     }
 
