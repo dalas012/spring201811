@@ -1,6 +1,6 @@
 package ru.otus.dalas.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.otus.dalas.dao.QuestionDao;
 import ru.otus.dalas.dao.QuestionDaoImpl;
 import ru.otus.dalas.domain.Question;
@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class QuestionServiceImplTest {
 

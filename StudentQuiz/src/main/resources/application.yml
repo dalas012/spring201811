@@ -1,0 +1,21 @@
+server:
+  port: 8082
+
+logging:
+  level:
+    ROOT: INFO
+
+spring:
+  banner:
+    location: banner.txt
+  main:
+    allow-bean-definition-overriding: true
+
+
+
+# Available values: quiz.csv, quiz_ru_RU.csv
+filename: quiz.csv
+separator: \,
+
+# Available values: en_US or ru_RU
+languageTag: en_US

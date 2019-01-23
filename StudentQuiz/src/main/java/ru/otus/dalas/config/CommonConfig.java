@@ -1,16 +1,14 @@
-package ru.otus.dalas;
+package ru.otus.dalas.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.otus.dalas.service.IOService;
 import ru.otus.dalas.service.IOServiceImpl;
 
-@ComponentScan
-@PropertySource("classpath:config.properties")
+@Configuration
 public class CommonConfig {
 
     @Bean
