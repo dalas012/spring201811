@@ -23,13 +23,9 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void startTest() {
+    public void startTest(String name) {
 
-        ioService.printLine(messageService.getMessage("Starting-test"));
-        ioService.printLine(messageService.getMessage("Enter-first-name"));
-        String firstName = ioService.readLine();
-        ioService.printLine(messageService.getMessage("Enter-last-name"));
-        String lastName = ioService.readLine();
+        ioService.printLine(messageService.getMessage("Starting-test", new String[] {name}));
         ioService.printLine(messageService.getMessage("Answer-the-questions-Good-luck"));
 
         int correctCount = 0;
@@ -44,7 +40,7 @@ public class TestServiceImpl implements TestService {
         }
 
         String[] params = new String[] {
-                firstName, lastName, String.valueOf(correctCount), String.valueOf(questions.size())
+                name, String.valueOf(correctCount), String.valueOf(questions.size())
         };
         ioService.printLine(messageService.getMessage("Result-message", params));
 
