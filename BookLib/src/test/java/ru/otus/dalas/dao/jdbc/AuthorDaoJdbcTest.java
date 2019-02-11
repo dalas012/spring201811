@@ -1,9 +1,11 @@
 package ru.otus.dalas.dao.jdbc;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.dalas.dao.interfaces.AuthorDao;
 import ru.otus.dalas.model.Author;
 
@@ -11,9 +13,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "/before.sql")
-@Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "/after.sql")
+@RunWith(SpringRunner.class)
+@JdbcTest
+@Import(AuthorDaoJdbc.class)
 class AuthorDaoJdbcTest {
 
     @Autowired
