@@ -1,6 +1,7 @@
 package ru.otus.dalas.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.dalas.dao.interfaces.AuthorDao;
@@ -41,11 +42,15 @@ public class AuthorDaoJdbc implements AuthorDao {
     public Author getById(Long id) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        return jdbc.queryForObject(
-                " select id as author_id, name as author_name " +
-                        " from authors " +
-                        " where id = :id ",
-                params, mapper);
+        try {
+            return jdbc.queryForObject(
+                    " select id as author_id, name as author_name " +
+                            " from authors " +
+                            " where id = :id ",
+                    params, mapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

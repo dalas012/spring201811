@@ -1,6 +1,7 @@
 package ru.otus.dalas.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.dalas.dao.interfaces.AuthorDao;
@@ -43,8 +44,14 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public void insert(Book book) {
-        authorDao.insert(book.getAuthor());
-        genreDao.insert(book.getGenre());
+        Author author = authorDao.getById(book.getAuthor().getId());
+        if (author == null) {
+            authorDao.insert(book.getAuthor());
+        }
+        Genre genre = genreDao.getById(book.getGenre().getId());
+        if (genre == null) {
+            genreDao.insert(book.getGenre());
+        }
         final Map<String, Object> params = new HashMap<>();
         params.put("id", book.getId());
         params.put("title", book.getTitle());
@@ -57,19 +64,23 @@ public class BookDaoJdbc implements BookDao {
     public Book getById(Long id) {
         final Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        return jdbc.queryForObject(
-                " select " +
-                        "   b.id as book_id, " +
-                        "   b.title as book_title, " +
-                        "   a.id as author_id, " +
-                        "   a.name as author_name, " +
-                        "   g.id as genre_id, " +
-                        "   g.name as genre_name " +
-                        " from books as b " +
-                        " left join authors as a on a.id = b.author_id " +
-                        " left join genres as g on g.id = b.genre_id " +
-                        " where b.id = :id ",
-                params, mapper);
+        try {
+            return jdbc.queryForObject(
+                    " select " +
+                            "   b.id as book_id, " +
+                            "   b.title as book_title, " +
+                            "   a.id as author_id, " +
+                            "   a.name as author_name, " +
+                            "   g.id as genre_id, " +
+                            "   g.name as genre_name " +
+                            " from books as b " +
+                            " left join authors as a on a.id = b.author_id " +
+                            " left join genres as g on g.id = b.genre_id " +
+                            " where b.id = :id ",
+                    params, mapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
