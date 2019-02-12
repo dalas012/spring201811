@@ -27,12 +27,12 @@ public class BookCommands {
     }
 
 
-    @ShellMethod("Books count")
+    @ShellMethod(key = "bookCount", value = "Books count")
     public Integer bookCount() {
         return dao.count();
     }
 
-    @ShellMethod("Insert book")
+    @ShellMethod(key = "bookInsert", value = "Insert book")
     public String bookInsert(
             @ShellOption Long id,
             @ShellOption String title,
@@ -45,19 +45,19 @@ public class BookCommands {
         return "Done!";
     }
 
-    @ShellMethod("Get book by ID")
+    @ShellMethod(key = "bookGet", value = "Get book by ID")
     public String bookGet(
             @ShellOption Long id
     ) {
         return dao.getById(id).toString();
     }
 
-    @ShellMethod("All books")
+    @ShellMethod(key = "bookAll", value = "All books")
     public String bookAll() {
         return dao.getAll().toString();
     }
 
-    @ShellMethod("Get book by Author")
+    @ShellMethod(key = "bookAuthor", value = "Get books by Author")
     public String bookAuthor(
             @ShellOption Long authorId
     ) {
@@ -65,7 +65,7 @@ public class BookCommands {
         return dao.getByAuthor(author).toString();
     }
 
-    @ShellMethod("Get book by Genre")
+    @ShellMethod(key = "bookGenre", value = "Get books by Genre")
     public String bookGenre(
             @ShellOption Long genreId
     ) {

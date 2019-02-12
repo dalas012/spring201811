@@ -31,16 +31,16 @@ class BookDaoJdbcTest {
 
     @Test
     void count() {
-        assertEquals(Integer.valueOf(2), dao.count());
+        assertEquals(Integer.valueOf(3), dao.count());
     }
 
     @Test
     void insert() {
-        Author author = new Author(3L, "Young Writer");
+        Author author = new Author(4L, "Young Writer");
         Genre genre = new Genre(3L, "New Genre");
-        dao.insert(new Book(3L, "New Real Book", author, genre));
-        assertEquals(Integer.valueOf(3), dao.count());
-        assertEquals("New Real Book", dao.getById(3L).getTitle());
+        dao.insert(new Book(4L, "New Real Book", author, genre));
+        assertEquals(Integer.valueOf(4), dao.count());
+        assertEquals("New Real Book", dao.getById(4L).getTitle());
     }
 
     @Test
@@ -52,7 +52,7 @@ class BookDaoJdbcTest {
     @Test
     void getAll() {
         List<Book> books = dao.getAll();
-        assertEquals(2, books.size());
+        assertEquals(3, books.size());
     }
 
     @Test

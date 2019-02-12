@@ -23,14 +23,14 @@ class AuthorDaoJdbcTest {
 
     @Test
     void count() {
-        assertEquals(Integer.valueOf(2), dao.count());
+        assertEquals(Integer.valueOf(3), dao.count());
     }
 
     @Test
     void insert() {
-        dao.insert(new Author(3L, "Young writer"));
-        assertEquals(Integer.valueOf(3), dao.count());
-        assertEquals("Young writer", dao.getById(3L).getName());
+        dao.insert(new Author(4L, "Young writer"));
+        assertEquals(Integer.valueOf(4), dao.count());
+        assertEquals("Young writer", dao.getById(4L).getName());
     }
 
     @Test
@@ -42,6 +42,6 @@ class AuthorDaoJdbcTest {
     @Test
     void getAll() {
         List<Author> authors = dao.getAll();
-        assertEquals(2, authors.size());
+        assertEquals(3, authors.size());
     }
 }

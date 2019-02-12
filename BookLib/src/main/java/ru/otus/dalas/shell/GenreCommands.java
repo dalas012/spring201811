@@ -19,12 +19,12 @@ public class GenreCommands {
     }
 
 
-    @ShellMethod("Genres count")
+    @ShellMethod(key = "genreCount", value = "Genres count")
     public Integer genreCount() {
         return dao.count();
     }
 
-    @ShellMethod("Insert genre")
+    @ShellMethod(key = "genreInsert", value = "Insert genre")
     public String genreInsert(
             @ShellOption Long id,
             @ShellOption String name
@@ -33,14 +33,14 @@ public class GenreCommands {
         return "Done!";
     }
 
-    @ShellMethod("Get genre by ID")
+    @ShellMethod(key = "genreGet", value = "Get genre by ID")
     public String genreGet(
             @ShellOption Long id
     ) {
         return dao.getById(id).toString();
     }
 
-    @ShellMethod("All genres")
+    @ShellMethod(key = "genreAll", value = "All genres")
     public String genreAll() {
          return dao.getAll().toString();
     }

@@ -19,12 +19,12 @@ public class AuthorCommands {
     }
 
 
-    @ShellMethod("Authors count")
+    @ShellMethod(key = "authorCount", value = "Authors count")
     public Integer authorCount() {
         return dao.count();
     }
 
-    @ShellMethod("Insert author")
+    @ShellMethod(key = "authorInsert", value = "Insert author")
     public String authorInsert(
             @ShellOption Long id,
             @ShellOption String name
@@ -33,14 +33,14 @@ public class AuthorCommands {
         return "Done!";
     }
 
-    @ShellMethod("Get author by ID")
+    @ShellMethod(key = "authorGet", value = "Get author by ID")
     public String authorGet(
             @ShellOption Long id
     ) {
         return dao.getById(id).toString();
     }
 
-    @ShellMethod("All authors")
+    @ShellMethod(key = "authorAll", value = "All authors")
     public String authorAll() {
          return dao.getAll().toString();
     }
