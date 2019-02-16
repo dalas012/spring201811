@@ -1,9 +1,9 @@
-package ru.otus.dalas.dao.jdbc;
+package ru.otus.dalas.dao.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.dalas.dao.interfaces.AuthorDao;
@@ -11,12 +11,12 @@ import ru.otus.dalas.model.Author;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@JdbcTest
-@Import(AuthorDaoJdbc.class)
-class AuthorDaoJdbcTest {
+@DataJpaTest
+@Import(AuthorDaoJpa.class)
+class AuthorDaoJpaTest {
 
     @Autowired
     AuthorDao dao;
@@ -28,7 +28,7 @@ class AuthorDaoJdbcTest {
 
     @Test
     void insert() {
-        dao.insert(new Author(4L, "Young writer"));
+        dao.insert(new Author("Young writer"));
         assertEquals(Integer.valueOf(4), dao.count());
         assertEquals("Young writer", dao.getById(4L).getName());
     }

@@ -1,15 +1,20 @@
 package ru.otus.dalas.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "genres")
 public class Genre {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     public Genre() {
     }
 
-    public Genre(Long id, String name) {
-        this.id = id;
+    public Genre(String name) {
         this.name = name;
     }
 

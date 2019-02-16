@@ -1,9 +1,9 @@
-package ru.otus.dalas.dao.jdbc;
+package ru.otus.dalas.dao.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.dalas.dao.interfaces.AuthorDao;
@@ -15,12 +15,12 @@ import ru.otus.dalas.model.Genre;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-@JdbcTest
-@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
-class BookDaoJdbcTest {
+@DataJpaTest
+@Import({BookDaoJpa.class, AuthorDaoJpa.class, GenreDaoJpa.class})
+class BookDaoJpaTest {
 
     @Autowired
     BookDao dao;
@@ -36,9 +36,9 @@ class BookDaoJdbcTest {
 
     @Test
     void insert() {
-        Author author = new Author(4L, "Young Writer");
-        Genre genre = new Genre(3L, "New Genre");
-        dao.insert(new Book(4L, "New Real Book", author, genre));
+        Author author = new Author("Young Writer");
+        Genre genre = new Genre("New Genre");
+        dao.insert(new Book("New Real Book", author, genre));
         assertEquals(Integer.valueOf(4), dao.count());
         assertEquals("New Real Book", dao.getById(4L).getTitle());
     }

@@ -1,15 +1,20 @@
 package ru.otus.dalas.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "authors")
 public class Author {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
     public Author() {
     }
 
-    public Author(Long id, String name) {
-        this.id = id;
+    public Author(String name) {
         this.name = name;
     }
 
