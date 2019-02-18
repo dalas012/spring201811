@@ -1,6 +1,7 @@
 package ru.otus.dalas.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "books")
@@ -10,10 +11,12 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Author author;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Genre genre;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
 
     public Book() {
     }
@@ -54,6 +57,14 @@ public class Book {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

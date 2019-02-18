@@ -34,9 +34,7 @@ class CommentDaoJpaTest {
 
     @Test
     void insert() {
-        Author author = new Author("Young Writer");
-        Genre genre = new Genre("New Genre");
-        Book book = new Book("New Real Book", author, genre);
+        Book book = bookDao.getById(1L);
         dao.insert(new Comment(book, "Very good"));
         assertEquals(Integer.valueOf(2), dao.count());
         assertEquals("Very good", dao.getById(2L).getText());

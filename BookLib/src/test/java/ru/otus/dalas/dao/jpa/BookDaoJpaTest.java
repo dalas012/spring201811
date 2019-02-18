@@ -36,8 +36,8 @@ class BookDaoJpaTest {
 
     @Test
     void insert() {
-        Author author = new Author("Young Writer");
-        Genre genre = new Genre("New Genre");
+        Author author = authorDao.getById(1L);
+        Genre genre = genreDao.getById(1L);
         dao.insert(new Book("New Real Book", author, genre));
         assertEquals(Integer.valueOf(4), dao.count());
         assertEquals("New Real Book", dao.getById(4L).getTitle());
