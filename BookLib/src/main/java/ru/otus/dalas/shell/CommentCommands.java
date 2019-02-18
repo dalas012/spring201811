@@ -18,7 +18,7 @@ public class CommentCommands {
     }
 
     @ShellMethod(key = "commentCount", value = "Comments count")
-    public Integer commentCount() {
+    public Long commentCount() {
         return service.count();
     }
 

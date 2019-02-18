@@ -4,31 +4,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.dalas.dao.interfaces.AuthorDao;
 import ru.otus.dalas.model.Author;
+import ru.otus.dalas.repositories.AuthorRepository;
 
 @ShellComponent
 public class AuthorCommands {
 
-    private AuthorDao dao;
+    private AuthorRepository repository;
 
 
     @Autowired
-    public AuthorCommands(AuthorDao authorDao) {
-        this.dao = authorDao;
+    public AuthorCommands(AuthorRepository repository) {
+        this.repository = repository;
     }
 
 
     @ShellMethod(key = "authorCount", value = "Authors count")
-    public Integer authorCount() {
-        return dao.count();
+    public Long authorCount() {
+        return repository.count();
     }
 
     @ShellMethod(key = "authorInsert", value = "Insert author")
     public String authorInsert(
             @ShellOption String name
     ) {
-        dao.insert(new Author(name));
+        repository.save(new Author(name));
         return "Done!";
     }
 
@@ -36,11 +36,11 @@ public class AuthorCommands {
     public String authorGet(
             @ShellOption Long id
     ) {
-        return dao.getById(id).toString();
+        return repository.findAuthorById(id).toString();
     }
 
     @ShellMethod(key = "authorAll", value = "All authors")
     public String authorAll() {
-         return dao.getAll().toString();
+         return repository.findAll().toString();
     }
 }

@@ -4,31 +4,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.dalas.dao.interfaces.GenreDao;
 import ru.otus.dalas.model.Genre;
+import ru.otus.dalas.repositories.GenreRepository;
 
 @ShellComponent
 public class GenreCommands {
 
-    private GenreDao dao;
+    private GenreRepository repository;
 
 
     @Autowired
-    public GenreCommands(GenreDao genreDao) {
-        this.dao = genreDao;
+    public GenreCommands(GenreRepository repository) {
+        this.repository = repository;
     }
 
 
     @ShellMethod(key = "genreCount", value = "Genres count")
-    public Integer genreCount() {
-        return dao.count();
+    public Long genreCount() {
+        return repository.count();
     }
 
     @ShellMethod(key = "genreInsert", value = "Insert genre")
     public String genreInsert(
             @ShellOption String name
     ) {
-        dao.insert(new Genre(name));
+        repository.save(new Genre(name));
         return "Done!";
     }
 
@@ -36,11 +36,11 @@ public class GenreCommands {
     public String genreGet(
             @ShellOption Long id
     ) {
-        return dao.getById(id).toString();
+        return repository.findGenreById(id).toString();
     }
 
     @ShellMethod(key = "genreAll", value = "All genres")
     public String genreAll() {
-         return dao.getAll().toString();
+         return repository.findAll().toString();
     }
 }

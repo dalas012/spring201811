@@ -4,58 +4,54 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.dalas.dao.interfaces.BookDao;
-import ru.otus.dalas.dao.interfaces.CommentDao;
-import ru.otus.dalas.model.Author;
 import ru.otus.dalas.model.Book;
 import ru.otus.dalas.model.Comment;
-import ru.otus.dalas.model.Genre;
+import ru.otus.dalas.repositories.BookRepository;
+import ru.otus.dalas.repositories.CommentRepository;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import({CommentDaoJpa.class, BookDaoJpa.class})
 class CommentDaoJpaTest {
 
     @Autowired
-    private CommentDao dao;
+    private CommentRepository repository;
     @Autowired
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @Test
     void count() {
-        assertEquals(Integer.valueOf(1), dao.count());
+        assertEquals(1, repository.count());
     }
 
     @Test
-    void insert() {
-        Book book = bookDao.getById(1L);
-        dao.insert(new Comment(book, "Very good"));
-        assertEquals(Integer.valueOf(2), dao.count());
-        assertEquals("Very good", dao.getById(2L).getText());
+    void save() {
+        Book book = bookRepository.findBookById(1L);
+        repository.save(new Comment(book, "Very good"));
+        assertEquals(2, repository.count());
+        assertEquals("Very good", repository.findCommentById(2L).getText());
     }
 
     @Test
-    void getById() {
-        Comment comment = dao.getById(1L);
+    void findCommentById() {
+        Comment comment = repository.findCommentById(1L);
         assertEquals("Good book", comment.getText());
     }
 
     @Test
-    void getAll() {
-        List<Comment> comments = dao.getAll();
+    void findAll() {
+        List<Comment> comments = repository.findAll();
         assertEquals(1, comments.size());
     }
 
     @Test
-    void getByBook() {
-        Book book = bookDao.getById(1L);
-        List<Comment> comments = dao.getByBook(book);
+    void findByBook() {
+        Book book = bookRepository.findBookById(1L);
+        List<Comment> comments = repository.findByBook(book);
         assertEquals(1, comments.size());
         assertEquals("Good book", comments.get(0).getText());
     }
