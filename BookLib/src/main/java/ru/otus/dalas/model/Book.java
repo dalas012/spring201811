@@ -1,17 +1,27 @@
 package ru.otus.dalas.model;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "books")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @ManyToOne
     private Author author;
+    @ManyToOne
     private Genre genre;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
 
     public Book() {
     }
 
-    public Book(Long id, String title, Author author, Genre genre) {
-        this.id = id;
+    public Book(String title, Author author, Genre genre) {
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -49,13 +59,21 @@ public class Book {
         this.genre = genre;
     }
 
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author=" + author +
-                ", genre=" + genre +
+                ", author=" + author.getName() +
+                ", genre=" + genre.getName() +
                 '}';
     }
 }

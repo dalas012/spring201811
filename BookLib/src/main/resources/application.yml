@@ -1,3 +1,7 @@
 spring:
   datasource:
     data: data.sql
+    schema: schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: none

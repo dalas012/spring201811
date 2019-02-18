@@ -34,14 +34,13 @@ public class BookCommands {
 
     @ShellMethod(key = "bookInsert", value = "Insert book")
     public String bookInsert(
-            @ShellOption Long id,
             @ShellOption String title,
             @ShellOption Long authorId,
             @ShellOption Long genreId
     ) {
         Author author = authorDao.getById(authorId);
         Genre genre = genreDao.getById(genreId);
-        dao.insert(new Book(id, title, author, genre));
+        dao.insert(new Book(title, author, genre));
         return "Done!";
     }
 

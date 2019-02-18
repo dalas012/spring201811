@@ -1,9 +1,9 @@
-package ru.otus.dalas.dao.jdbc;
+package ru.otus.dalas.dao.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.dalas.dao.interfaces.GenreDao;
@@ -14,9 +14,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
-@JdbcTest
-@Import(GenreDaoJdbc.class)
-class GenreDaoJdbcTest {
+@DataJpaTest
+@Import(GenreDaoJpa.class)
+class GenreDaoJpaTest {
 
     @Autowired
     GenreDao dao;
@@ -28,7 +28,7 @@ class GenreDaoJdbcTest {
 
     @Test
     void insert() {
-        dao.insert(new Genre(3L, "New genre"));
+        dao.insert(new Genre("New genre"));
         assertEquals(Integer.valueOf(3), dao.count());
         assertEquals("New genre", dao.getById(3L).getName());
     }

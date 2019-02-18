@@ -26,10 +26,9 @@ public class GenreCommands {
 
     @ShellMethod(key = "genreInsert", value = "Insert genre")
     public String genreInsert(
-            @ShellOption Long id,
             @ShellOption String name
     ) {
-        dao.insert(new Genre(id, name));
+        dao.insert(new Genre(name));
         return "Done!";
     }
 

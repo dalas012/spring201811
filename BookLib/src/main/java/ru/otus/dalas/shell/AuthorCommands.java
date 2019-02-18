@@ -26,10 +26,9 @@ public class AuthorCommands {
 
     @ShellMethod(key = "authorInsert", value = "Insert author")
     public String authorInsert(
-            @ShellOption Long id,
             @ShellOption String name
     ) {
-        dao.insert(new Author(id, name));
+        dao.insert(new Author(name));
         return "Done!";
     }
 
