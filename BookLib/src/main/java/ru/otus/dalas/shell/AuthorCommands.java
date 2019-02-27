@@ -1,5 +1,6 @@
 package ru.otus.dalas.shell;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -32,9 +33,9 @@ public class AuthorCommands {
         return "Done!";
     }
 
-    @ShellMethod(key = "authorGet", value = "Get author by ID")
+    @ShellMethod(key = "authorGet", value = "Get author by ObjectID")
     public String authorGet(
-            @ShellOption Long id
+            @ShellOption ObjectId id
     ) {
         return repository.findAuthorById(id).toString();
     }

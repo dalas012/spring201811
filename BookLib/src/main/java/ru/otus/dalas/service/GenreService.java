@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommentService {
+public class GenreService {
 
     private BookRepository repository;
 
     @Autowired
-    public CommentService(BookRepository repository) {
+    public GenreService(BookRepository repository) {
         this.repository = repository;
     }
 
@@ -23,28 +23,26 @@ public class CommentService {
         return (long) getAll().size();
     }
 
-    public void insert(ObjectId bookId, String text) {
+    public void insert(ObjectId bookId, String genre) {
         Book book = repository.findBookById(bookId);
-        if (book.getComments() == null) {
-            book.setComments(new ArrayList<>());
-        }
-        book.getComments().add(text);
+        book.setGenre(genre);
         repository.save(book);
     }
 
     public List<String> getAll() {
         List<String> result = new ArrayList<>();
         for (Book book : repository.findAll()) {
-            if (book.getComments() != null && !book.getComments().isEmpty()) {
-                result.addAll(book.getComments());
+            String genre = book.getGenre();
+            if (genre != null && !genre.isEmpty() && !result.contains(genre)) {
+                result.add(genre);
             }
         }
         return result;
     }
 
-    public List<String> getByBook(ObjectId bookId) {
+    public String getByBook(ObjectId bookId) {
         Book book = repository.findBookById(bookId);
-        return book.getComments();
+        return book.getGenre();
     }
 
 }
