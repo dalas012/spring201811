@@ -4,32 +4,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.dalas.dao.interfaces.AuthorDao;
-import ru.otus.dalas.dao.interfaces.BookDao;
-import ru.otus.dalas.dao.interfaces.GenreDao;
 import ru.otus.dalas.model.Author;
 import ru.otus.dalas.model.Book;
 import ru.otus.dalas.model.Genre;
+import ru.otus.dalas.repositories.AuthorRepository;
+import ru.otus.dalas.repositories.BookRepository;
+import ru.otus.dalas.repositories.GenreRepository;
 
 @ShellComponent
 public class BookCommands {
 
-    private BookDao dao;
-    private AuthorDao authorDao;
-    private GenreDao genreDao;
+    private BookRepository repository;
+    private AuthorRepository authorRepository;
+    private GenreRepository genreRepository;
 
 
     @Autowired
-    public BookCommands(BookDao dao, AuthorDao authorDao, GenreDao genreDao) {
-        this.dao = dao;
-        this.authorDao = authorDao;
-        this.genreDao = genreDao;
+    public BookCommands(BookRepository repository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+        this.repository = repository;
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
 
     @ShellMethod(key = "bookCount", value = "Books count")
-    public Integer bookCount() {
-        return dao.count();
+    public Long bookCount() {
+        return repository.count();
     }
 
     @ShellMethod(key = "bookInsert", value = "Insert book")
@@ -38,9 +38,9 @@ public class BookCommands {
             @ShellOption Long authorId,
             @ShellOption Long genreId
     ) {
-        Author author = authorDao.getById(authorId);
-        Genre genre = genreDao.getById(genreId);
-        dao.insert(new Book(title, author, genre));
+        Author author = authorRepository.findAuthorById(authorId);
+        Genre genre = genreRepository.findGenreById(genreId);
+        repository.save(new Book(title, author, genre));
         return "Done!";
     }
 
@@ -48,27 +48,27 @@ public class BookCommands {
     public String bookGet(
             @ShellOption Long id
     ) {
-        return dao.getById(id).toString();
+        return repository.findBookById(id).toString();
     }
 
     @ShellMethod(key = "bookAll", value = "All books")
     public String bookAll() {
-        return dao.getAll().toString();
+        return repository.findAll().toString();
     }
 
     @ShellMethod(key = "bookAuthor", value = "Get books by Author")
     public String bookAuthor(
             @ShellOption Long authorId
     ) {
-        Author author = authorDao.getById(authorId);
-        return dao.getByAuthor(author).toString();
+        Author author = authorRepository.findAuthorById(authorId);
+        return repository.findByAuthor(author).toString();
     }
 
     @ShellMethod(key = "bookGenre", value = "Get books by Genre")
     public String bookGenre(
             @ShellOption Long genreId
     ) {
-        Genre genre = genreDao.getById(genreId);
-        return dao.getByGenre(genre).toString();
+        Genre genre = genreRepository.findGenreById(genreId);
+        return repository.findByGenre(genre).toString();
     }
 }

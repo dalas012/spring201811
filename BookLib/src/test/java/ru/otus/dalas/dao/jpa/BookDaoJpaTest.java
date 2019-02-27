@@ -4,69 +4,67 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.dalas.dao.interfaces.AuthorDao;
-import ru.otus.dalas.dao.interfaces.BookDao;
-import ru.otus.dalas.dao.interfaces.GenreDao;
 import ru.otus.dalas.model.Author;
 import ru.otus.dalas.model.Book;
 import ru.otus.dalas.model.Genre;
+import ru.otus.dalas.repositories.AuthorRepository;
+import ru.otus.dalas.repositories.BookRepository;
+import ru.otus.dalas.repositories.GenreRepository;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@Import({BookDaoJpa.class, AuthorDaoJpa.class, GenreDaoJpa.class})
 class BookDaoJpaTest {
 
     @Autowired
-    BookDao dao;
+    BookRepository repository;
     @Autowired
-    AuthorDao authorDao;
+    AuthorRepository authorRepository;
     @Autowired
-    GenreDao genreDao;
+    GenreRepository genreRepository;
 
     @Test
     void count() {
-        assertEquals(Integer.valueOf(3), dao.count());
+        assertEquals(3, repository.count());
     }
 
     @Test
-    void insert() {
-        Author author = authorDao.getById(1L);
-        Genre genre = genreDao.getById(1L);
-        dao.insert(new Book("New Real Book", author, genre));
-        assertEquals(Integer.valueOf(4), dao.count());
-        assertEquals("New Real Book", dao.getById(4L).getTitle());
+    void save() {
+        Author author = authorRepository.findAuthorById(1L);
+        Genre genre = genreRepository.findGenreById(1L);
+        repository.save(new Book("New Real Book", author, genre));
+        assertEquals(4, repository.count());
+        assertEquals("New Real Book", repository.findBookById(4L).getTitle());
     }
 
     @Test
-    void getById() {
-        Book book = dao.getById(1L);
+    void findBookById() {
+        Book book = repository.findBookById(1L);
         assertEquals("Bicentennial man", book.getTitle());
     }
 
     @Test
-    void getAll() {
-        List<Book> books = dao.getAll();
+    void findAll() {
+        List<Book> books = repository.findAll();
         assertEquals(3, books.size());
     }
 
     @Test
-    void getByAuthor() {
-        Author author = authorDao.getById(1L);
-        List<Book> books = dao.getByAuthor(author);
+    void findByAuthor() {
+        Author author = authorRepository.findAuthorById(1L);
+        List<Book> books = repository.findByAuthor(author);
         assertEquals(1, books.size());
         assertEquals("Bicentennial man", books.get(0).getTitle());
     }
 
     @Test
-    void getByGenre() {
-        Genre genre = genreDao.getById(1L);
-        List<Book> books = dao.getByGenre(genre);
+    void findByGenre() {
+        Genre genre = genreRepository.findGenreById(1L);
+        List<Book> books = repository.findByGenre(genre);
         assertEquals(1, books.size());
         assertEquals("Bicentennial man", books.get(0).getTitle());
     }
