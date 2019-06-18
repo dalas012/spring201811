@@ -1,10 +1,10 @@
 package ru.otus.dalas.shell;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.dalas.model.Comment;
 import ru.otus.dalas.service.CommentService;
 
 @ShellComponent
@@ -22,25 +22,13 @@ public class CommentCommands {
         return service.count();
     }
 
-    @ShellMethod(key = "commentInsert", value = "Insert comment")
+    @ShellMethod(key = "commentInsert", value = "Insert comment into book")
     public String commentInsert(
-            @ShellOption Long bookId,
+            @ShellOption ObjectId bookId,
             @ShellOption String text
     ) {
         service.insert(bookId, text);
         return "Done!";
-    }
-
-    @ShellMethod(key = "commentGet", value = "Get comment by ID")
-    public String commentGet(
-            @ShellOption Long id
-    ) {
-        Comment comment = service.getById(id);
-        if (comment != null) {
-            return comment.toString();
-        } else {
-            return "Not found!";
-        }
     }
 
     @ShellMethod(key = "commentAll", value = "All comments")
@@ -50,7 +38,7 @@ public class CommentCommands {
 
     @ShellMethod(key = "commentBook", value = "Get comments by book")
     public String commentBook(
-            @ShellOption Long bookId
+            @ShellOption ObjectId bookId
     ) {
         return service.getByBook(bookId).toString();
     }

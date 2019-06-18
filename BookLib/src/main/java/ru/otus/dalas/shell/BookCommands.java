@@ -1,29 +1,26 @@
 package ru.otus.dalas.shell;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.dalas.model.Author;
 import ru.otus.dalas.model.Book;
-import ru.otus.dalas.model.Genre;
 import ru.otus.dalas.repositories.AuthorRepository;
 import ru.otus.dalas.repositories.BookRepository;
-import ru.otus.dalas.repositories.GenreRepository;
 
 @ShellComponent
 public class BookCommands {
 
     private BookRepository repository;
     private AuthorRepository authorRepository;
-    private GenreRepository genreRepository;
 
 
     @Autowired
-    public BookCommands(BookRepository repository, AuthorRepository authorRepository, GenreRepository genreRepository) {
+    public BookCommands(BookRepository repository, AuthorRepository authorRepository) {
         this.repository = repository;
         this.authorRepository = authorRepository;
-        this.genreRepository = genreRepository;
     }
 
 
@@ -35,18 +32,17 @@ public class BookCommands {
     @ShellMethod(key = "bookInsert", value = "Insert book")
     public String bookInsert(
             @ShellOption String title,
-            @ShellOption Long authorId,
-            @ShellOption Long genreId
+            @ShellOption ObjectId authorId,
+            @ShellOption String genre
     ) {
         Author author = authorRepository.findAuthorById(authorId);
-        Genre genre = genreRepository.findGenreById(genreId);
         repository.save(new Book(title, author, genre));
         return "Done!";
     }
 
     @ShellMethod(key = "bookGet", value = "Get book by ID")
     public String bookGet(
-            @ShellOption Long id
+            @ShellOption ObjectId id
     ) {
         return repository.findBookById(id).toString();
     }
@@ -58,7 +54,7 @@ public class BookCommands {
 
     @ShellMethod(key = "bookAuthor", value = "Get books by Author")
     public String bookAuthor(
-            @ShellOption Long authorId
+            @ShellOption ObjectId authorId
     ) {
         Author author = authorRepository.findAuthorById(authorId);
         return repository.findByAuthor(author).toString();
@@ -66,9 +62,8 @@ public class BookCommands {
 
     @ShellMethod(key = "bookGenre", value = "Get books by Genre")
     public String bookGenre(
-            @ShellOption Long genreId
+            @ShellOption String genre
     ) {
-        Genre genre = genreRepository.findGenreById(genreId);
         return repository.findByGenre(genre).toString();
     }
 }

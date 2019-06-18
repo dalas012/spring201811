@@ -1,46 +1,41 @@
 package ru.otus.dalas.model;
 
-import javax.persistence.*;
-import java.util.Set;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "books")
+import java.util.List;
+
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    @ManyToOne
+    private ObjectId id;
+    @DBRef
+    @Indexed
     private Author author;
-    @ManyToOne
-    private Genre genre;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comment> comments;
+    private String title;
+    @Indexed
+    private String genre;
+    private List<String> comments;
 
     public Book() {
     }
 
-    public Book(String title, Author author, Genre genre) {
+    public Book(String title, Author author, String genre) {
         this.title = title;
         this.author = author;
         this.genre = genre;
     }
 
-    public Long getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(ObjectId id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Author getAuthor() {
@@ -51,19 +46,27 @@ public class Book {
         this.author = author;
     }
 
-    public Genre getGenre() {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 
-    public Set<Comment> getComments() {
+    public List<String> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(List<String> comments) {
         this.comments = comments;
     }
 
@@ -73,7 +76,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author=" + author.getName() +
-                ", genre=" + genre.getName() +
+                ", genre=" + genre +
                 '}';
     }
 }

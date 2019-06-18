@@ -1,17 +1,18 @@
 package ru.otus.dalas.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import ru.otus.dalas.model.Author;
 
 import java.util.List;
 
 @Repository
-public interface AuthorRepository extends CrudRepository<Author, Long> {
+public interface AuthorRepository extends MongoRepository<Author, ObjectId> {
 
     Author save(Author author);
     long count();
-    Author findAuthorById(Long id);
+    Author findAuthorById(ObjectId id);
     List<Author> findAll();
 
 }
